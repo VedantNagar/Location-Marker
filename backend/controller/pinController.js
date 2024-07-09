@@ -30,3 +30,16 @@ export const getPins = async (req, res) => {
     res.status(200).json(pins);
   } catch (error) {}
 };
+
+export const deletePins = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const pin = await Pin.findByIdAndDelete(id);
+    if (!pin) {
+      return res.status(404).json({ message: "Pin not found" });
+    }
+    res.status(200).json({ message: "Pin deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
