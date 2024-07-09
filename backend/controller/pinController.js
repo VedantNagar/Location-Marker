@@ -1,7 +1,7 @@
 import Pin from "../model/pinSchema.js";
 
 export const createPin = async (req, res) => {
-  const { username, title, desc, rating, lat, long } = req.body;
+  const { username, title, description, rating, lat, long } = req.body;
   try {
     if (!username) {
       return res.status(400).json({ message: "Username is required" });
@@ -9,7 +9,7 @@ export const createPin = async (req, res) => {
     const newPin = new Pin({
       username,
       title,
-      desc,
+      description,
       rating,
       lat,
       long,

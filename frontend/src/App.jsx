@@ -62,11 +62,11 @@ function App() {
                   <label className="text-sm text-red-500 border-b-2 border-red-500">
                     Place
                   </label>
-                  <h4 className="place text-xl font-bold">Random Home</h4>
+                  <h4 className="place text-xl font-bold">{pin.title}</h4>
                   <label className="text-sm text-red-500 border-b-2 border-red-500">
-                    Review
+                    Description
                   </label>
-                  <h4 className="text-base">5/5</h4>
+                  <h4 className="text-base">{pin?.description}</h4>
                   <label className="text-sm text-red-500 border-b-2 border-red-500">
                     Rating
                   </label>
