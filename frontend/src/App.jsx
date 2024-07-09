@@ -47,7 +47,7 @@ function App() {
               <Marker latitude={pin.lat} longitude={pin.long} anchor="bottom">
                 <FaMapPin
                   className="text-red-500 text-2xl"
-                  style={{ fontSize: `${viewState.zoom * 5}px` }}
+                  style={{ fontSize: `${viewState.zoom * 4}px` }}
                 />
               </Marker>
               <Popup
@@ -78,9 +78,7 @@ function App() {
                   <label className="text-sm text-red-500 border-b-2 border-red-500">
                     Information
                   </label>
-                  <div className="username text-sm">
-                    Random Information is being entered here
-                  </div>
+                  <div className="username text-sm">Created by user</div>
                   <span className="date text-xs">1 Hour Ago</span>
                 </div>
               </Popup>
