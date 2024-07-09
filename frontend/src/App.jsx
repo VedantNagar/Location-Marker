@@ -8,8 +8,8 @@ import axios from "axios";
 function App() {
   const [pins, setPins] = useState([]);
   const [viewState, setViewState] = useState({
-    latitude: 37.8,
-    longitude: -122.4,
+    latitude: 28.5,
+    longitude: 77.04,
     zoom: 10,
     bearing: 0,
     pitch: 0,
