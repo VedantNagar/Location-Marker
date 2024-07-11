@@ -10,6 +10,10 @@ function App() {
   const [pins, setPins] = useState([]);
   const [currentLocation, setCurrentLocation] = useState({});
   const [newPlace, setNewPlace] = useState(null);
+  const [currentUsername, setCurrentUsername] = useState("vedant21"); // [1
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+  const [rating, setRating] = useState("");
   const [viewState, setViewState] = useState({
     latitude: 28.5,
     longitude: 77.04,
@@ -42,6 +46,25 @@ function App() {
       long: lng,
       lat: lat,
     });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const newPin = {
+        username: currentUsername,
+        title,
+        description: desc,
+        rating,
+        lat: newPlace.lat,
+        long: newPlace.lng,
+      };
+      const res = await axios.post("http://localhost:7800/api/pins", newPin);
+      setPins([...pins, res.data]);
+      setNewPlace(null);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -122,7 +145,31 @@ function App() {
             onClose={() => setNewPlace(null)}
             anchor="left"
           >
-            New Place
+            <div className="flex">
+              <form className="flex" onSubmit={handleSubmit}>
+                <label htmlFor="title">Title</label>
+                <input
+                  type="text"
+                  placeholder="Enter a title"
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <label htmlFor="review">Review</label>
+                <textarea
+                  placeholder="Share your experience"
+                  rows="3"
+                  onChange={(e) => setDesc(e.target.value)}
+                ></textarea>
+                <label htmlFor="rating">Rating</label>
+                <select onChange={(e) => setRating(e.target.value)}>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                <button type="submit">Add Pin</button>
+              </form>
+            </div>
           </Popup>
         )}
       </Map>
