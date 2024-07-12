@@ -106,7 +106,7 @@ function App() {
               </Marker>
               {pin._id === currentLocation && (
                 <Popup
-                  className="w-72 h-auto ml-0"
+                  maxWidth="400px"
                   latitude={pin.lat}
                   longitude={pin.long}
                   closeButton={true}
@@ -114,7 +114,7 @@ function App() {
                   onClose={() => setCurrentLocation(null)}
                   anchor="left"
                 >
-                  <div className="bg-white shadow-md rounded-lg p-1 mx-4">
+                  <div className="bg-white shadow-md rounded-lg  p-2">
                     <label className="text-sm text-red-500 border-b-2 border-red-500 block">
                       Place
                     </label>
