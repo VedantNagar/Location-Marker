@@ -12,12 +12,13 @@ function App() {
   const [currentLocation, setCurrentLocation] = useState({});
   const [newPlace, setNewPlace] = useState(null);
   const [currentUsername, setCurrentUsername] = useState(null);
+  const [showRegister, setShowRegister] = useState(false);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [rating, setRating] = useState("");
   const [viewState, setViewState] = useState({
-    latitude: 28.5,
-    longitude: 77.04,
+    latitude: 28.6567,
+    longitude: 77.069,
     zoom: 10,
     bearing: 0,
     pitch: 0,
@@ -61,10 +62,11 @@ function App() {
       lat: newPlace.lat,
       long: newPlace.long,
     };
-
     try {
+      if (!newPin.username) {
+        newPin.username = "Me";
+      }
       const res = await axios.post("http://localhost:7800/api/pins", newPin);
-
       setPins([...pins, res.data.newPin]);
       setNewPlace(null);
     } catch (error) {
@@ -162,8 +164,8 @@ function App() {
               </div>
             </div>
           )}
-        </div> */}
-        <div></div>
+        </div>
+        <div></div> */}
         {newPlace && (
           <Popup
             className="w-72 h-auto ml-0"
@@ -201,23 +203,32 @@ function App() {
             </div>
           </Popup>
         )}
-        <div className="absolute top-0 right-0 m-4">
-          {currentUsername ? (
-            <button className="bg-red-700 text-white px-4 py-2 rounded-md mr-2">
-              Log out
-            </button>
-          ) : (
-            <div>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
-                Login
-              </button>
-              <button className="bg-green-500 text-white px-4 py-2 rounded-md">
-                Register
-              </button>
-            </div>
-          )}
-        </div>
       </Map>
+      <div className="absolute top-0 right-0 m-4 z-10">
+        {currentUsername ? (
+          <button className="bg-red-700 text-white px-4 py-2 rounded-md mr-2">
+            Log out
+          </button>
+        ) : (
+          <div>
+            <button className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
+              Login
+            </button>
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded-md"
+              onClick={() => setShowRegister(true)}
+            >
+              Register
+            </button>
+          </div>
+        )}
+      </div>
+
+      {showRegister && (
+        <div className="absolute inset-0 flex justify-center items-center bg-transparent z-20">
+          <Register onClose={() => setShowRegister(false)} />
+        </div>
+      )}
     </div>
   );
 }
