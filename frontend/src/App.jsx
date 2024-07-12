@@ -10,7 +10,7 @@ function App() {
   const [pins, setPins] = useState([]);
   const [currentLocation, setCurrentLocation] = useState({});
   const [newPlace, setNewPlace] = useState(null);
-  const [currentUsername, setCurrentUsername] = useState("vedant21"); // [1
+  const [currentUsername, setCurrentUsername] = useState("vedant21");
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [rating, setRating] = useState("");
@@ -29,7 +29,7 @@ function App() {
         setPins(response.data);
         console.log(response.data);
       } catch (error) {
-        console.log(error);
+        console.log("Error fetching pins:", error.message);
       }
     };
     getPins();
@@ -42,6 +42,7 @@ function App() {
 
   const addPinClick = (e) => {
     const { lng, lat } = e.lngLat;
+
     setNewPlace({
       long: lng,
       lat: lat,
@@ -50,20 +51,23 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const newPin = {
+      username: currentUsername,
+      title,
+      description: desc,
+      rating: parseInt(rating),
+      lat: newPlace.lat,
+      long: newPlace.long,
+    };
+    console.log("Submitting new pin:", newPin);
     try {
-      const newPin = {
-        username: currentUsername,
-        title,
-        description: desc,
-        rating,
-        lat: newPlace.lat,
-        long: newPlace.lng,
-      };
       const res = await axios.post("http://localhost:7800/api/pins", newPin);
-      setPins([...pins, res.data]);
+      console.log(res.data);
+      setPins([...pins, res.data.newPin]);
       setNewPlace(null);
     } catch (error) {
-      console.log(error);
+      console.log("Error is here", error);
     }
   };
 
