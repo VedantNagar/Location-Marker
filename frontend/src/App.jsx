@@ -5,6 +5,7 @@ import { FaMapPin } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import { format } from "timeago.js";
 import axios from "axios";
+import Register from "./components/Register";
 
 function App() {
   const [pins, setPins] = useState([]);
@@ -143,7 +144,7 @@ function App() {
             </React.Fragment>
           );
         })}
-        <div className="absolute top-0 right-0 m-4">
+        {/*         <div className="absolute top-0 right-0 m-4">
           {currentUsername ? (
             <button className="bg-red-700 text-white px-4 py-2 rounded-md mr-2">
               Log out
@@ -156,9 +157,13 @@ function App() {
               <button className="bg-green-500 text-white px-4 py-2 rounded-md">
                 Register
               </button>
+              <div>
+                <Register />
+              </div>
             </div>
           )}
-        </div>
+        </div> */}
+        <div></div>
         {newPlace && (
           <Popup
             className="w-72 h-auto ml-0"
@@ -196,6 +201,22 @@ function App() {
             </div>
           </Popup>
         )}
+        <div className="absolute top-0 right-0 m-4">
+          {currentUsername ? (
+            <button className="bg-red-700 text-white px-4 py-2 rounded-md mr-2">
+              Log out
+            </button>
+          ) : (
+            <div>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
+                Login
+              </button>
+              <button className="bg-green-500 text-white px-4 py-2 rounded-md">
+                Register
+              </button>
+            </div>
+          )}
+        </div>
       </Map>
     </div>
   );
