@@ -10,7 +10,7 @@ function App() {
   const [pins, setPins] = useState([]);
   const [currentLocation, setCurrentLocation] = useState({});
   const [newPlace, setNewPlace] = useState(null);
-  const [currentUsername, setCurrentUsername] = useState("vedant21");
+  const [currentUsername, setCurrentUsername] = useState(null);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [rating, setRating] = useState("");
@@ -60,10 +60,10 @@ function App() {
       lat: newPlace.lat,
       long: newPlace.long,
     };
-    console.log("Submitting new pin:", newPin);
+
     try {
       const res = await axios.post("http://localhost:7800/api/pins", newPin);
-      console.log(res.data);
+
       setPins([...pins, res.data.newPin]);
       setNewPlace(null);
     } catch (error) {
@@ -88,7 +88,13 @@ function App() {
           }
           return (
             <React.Fragment key={pin._id}>
-              <Marker latitude={pin.lat} longitude={pin.long} anchor="bottom">
+              <Marker
+                latitude={pin.lat}
+                longitude={pin.long}
+                offsetLeft={-viewState.zoom * 3.5}
+                offsetTop={-viewState.zoom * 7}
+                anchor="bottom"
+              >
                 <FaMapPin
                   className="text-red-500 text-2xl hover:cursor-pointer"
                   onClick={() => handleClick(pin._id, pin.lat, pin.long)}
@@ -118,11 +124,9 @@ function App() {
                       Rating
                     </label>
                     <div className="flex items-center py-1">
-                      <FaStar className="text-yellow-500 text-2xl" />
-                      <FaStar className="text-yellow-500 text-2xl" />
-                      <FaStar className="text-yellow-500 text-2xl" />
-                      <FaStar className="text-yellow-500 text-2xl" />
-                      <FaStar className="text-yellow-500 text-2xl" />
+                      {Array.from({ length: pin.rating }, (_, index) => (
+                        <FaStar key={index} className="text-yellow-500" />
+                      ))}
                     </div>
                     <label className="text-sm text-red-500 border-b-2 border-red-500 block">
                       Information
@@ -139,6 +143,22 @@ function App() {
             </React.Fragment>
           );
         })}
+        <div className="absolute top-0 right-0 m-4">
+          {currentUsername ? (
+            <button className="bg-red-700 text-white px-4 py-2 rounded-md mr-2">
+              Log out
+            </button>
+          ) : (
+            <div>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
+                Login
+              </button>
+              <button className="bg-green-500 text-white px-4 py-2 rounded-md">
+                Register
+              </button>
+            </div>
+          )}
+        </div>
         {newPlace && (
           <Popup
             className="w-72 h-auto ml-0"
