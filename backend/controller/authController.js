@@ -53,7 +53,7 @@ export const login = async (req, res) => {
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         secure: true,
       })
-      .json("User has been logged in");
+      .json({ message: "User has been logged in", username: user.username });
   } catch (error) {
     res.status(500).json(error);
   }

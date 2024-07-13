@@ -90,6 +90,11 @@ function App() {
     setShowLogin(false);
   };
 
+  const handleRegister = async (username) => {
+    setCurrentUsername(username);
+    setShowRegister(false);
+  };
+
   return (
     <div className="w-screen h-screen overflow-hidden">
       <Map
@@ -245,7 +250,10 @@ function App() {
       )}
       {showRegister && (
         <div className="absolute inset-0 flex justify-center items-center bg-transparent z-20">
-          <Register onClose={() => setShowRegister(false)} />
+          <Register
+            onClose={() => setShowRegister(false)}
+            onRegisterSuccess={handleRegister}
+          />
         </div>
       )}
     </div>

@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import axios from "axios";
 
-const Register = ({ onClose }) => {
+const Register = ({ onClose, onRegisterSuccess }) => {
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [formData, setFormData] = React.useState({
@@ -21,8 +21,12 @@ const Register = ({ onClose }) => {
         setError("All fields are required");
         return;
       }
-      await axios.post("http://localhost:7800/api/auth/register", formData);
+      const res = await axios.post(
+        "http://localhost:7800/api/auth/register",
+        formData
+      );
       setSuccess(true);
+      onRegisterSuccess(res.data.username);
     } catch (error) {
       setError(error.response?.data?.message || "An error occurred");
     }
