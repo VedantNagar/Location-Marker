@@ -1,17 +1,21 @@
 import React from "react";
 
-const Login = () => {
-  const mailRef = React.useRef();
-  const passRef = React.useRef();
+const Login = ({ onClose }) => {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = {
-        email: mailRef.current.value,
-        password: passRef.current.value,
-      };
-      const res = await axios.post("/users/login", user);
+      const res = await axios.post(
+        "http://localhost:7800/api/auth/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
       console.log(res.data);
     } catch (error) {
       console.log(error);
@@ -30,17 +34,20 @@ const Login = () => {
             Email
           </label>
           <input
-            type="text"
+            type="email"
             placeholder="Enter your email"
-            ref={mailRef}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="px-3 py-2 border border-gray-300 rounded mb-4 focus:outline-teal-200"
+            required
           />
           <label htmlFor="password" className="mb-2">
             Password
           </label>
           <input
             type="password"
-            ref={passRef}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
             className="px-3 py-2 border border-gray-300 rounded mb-4 focus:outline-teal-200"
           />
@@ -51,7 +58,7 @@ const Login = () => {
             Login
           </button>
           <button
-            /* onClick={onClose} */
+            onClick={onClose}
             className="mt-4 px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 w-full flex-col"
           >
             Close

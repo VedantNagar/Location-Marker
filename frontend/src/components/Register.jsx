@@ -1,26 +1,30 @@
 import React, { useRef } from "react";
+import axios from "axios";
 
 const Register = ({ onClose }) => {
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
-  const nameRef = useRef();
-  const mailRef = useRef();
-  const passRef = useRef();
+  const [formData, setFormData] = React.useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const newUser = {
-        username: nameRef.current.value,
-        email: mailRef.current.value,
-        password: passRef.current.value,
-      };
-      await axios.post("/users/register", newUser);
+      if (!formData.username || !formData.email || !formData.password) {
+        setError("All fields are required");
+        return;
+      }
+      await axios.post("http://localhost:7800/api/auth/register", formData);
       setSuccess(true);
-      setError(false);
     } catch (error) {
-      console.log(error);
-      setError(true);
+      setError(error.response?.data?.message || "An error occurred");
     }
   };
 
@@ -33,25 +37,31 @@ const Register = ({ onClose }) => {
         </label>
         <input
           type="text"
+          name="username"
           placeholder="Enter your username"
-          ref={nameRef}
+          value={formData.username}
+          onChange={handleChange}
           className="px-3 py-2 border border-gray-300 rounded mb-4"
         />
         <label htmlFor="email" className="mb-2">
           Email
         </label>
         <input
-          type="text"
+          type="email"
+          name="email"
           placeholder="Enter your email"
-          ref={mailRef}
+          value={formData.email}
+          onChange={handleChange}
           className="px-3 py-2 border border-gray-300 rounded mb-4"
         />
         <label htmlFor="password" className="mb-2">
           Password
         </label>
         <input
+          name="password"
           type="password"
-          ref={passRef}
+          value={formData.password}
+          onChange={handleChange}
           placeholder="Enter your password"
           className="px-3 py-2 border border-gray-300 rounded mb-4"
         />
@@ -73,11 +83,7 @@ const Register = ({ onClose }) => {
           Success! You can now log in.
         </div>
       )}
-      {error && (
-        <div className="text-red-500 text-center mt-4">
-          Error! Please try again.
-        </div>
-      )}
+      {error && <div className="text-red-500 text-center mt-4">{error}</div>}
     </div>
   );
 };
