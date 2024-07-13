@@ -2,7 +2,7 @@ import User from "../model/userSchema.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-export const register = async (req, res) => {
+/* export const register = async (req, res) => {
   const { username, email, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hashSync(password, 10);
@@ -37,7 +37,7 @@ export const login = async (req, res) => {
   } catch (error) {
     res.status(500).json(error);
   }
-};
+}; */
 
 export const getUsers = async (req, res) => {
   try {

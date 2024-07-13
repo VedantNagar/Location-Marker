@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./database/connectDB.js";
 import pinRoutes from "./router/pinRoutes.js";
 import userRoutes from "./router/userRoutes.js";
+import authRoutes from "./router/authRoutes.js";
 import cors from "cors";
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/api/pins", pinRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
 
 const port = process.env.PORT || 3000;
 const start = async () => {

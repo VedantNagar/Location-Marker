@@ -6,6 +6,7 @@ import { FaStar } from "react-icons/fa";
 import { format } from "timeago.js";
 import axios from "axios";
 import Register from "./components/Register";
+import Login from "./components/Login";
 
 function App() {
   const [pins, setPins] = useState([]);
@@ -13,6 +14,7 @@ function App() {
   const [newPlace, setNewPlace] = useState(null);
   const [currentUsername, setCurrentUsername] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [rating, setRating] = useState("");
@@ -211,7 +213,10 @@ function App() {
           </button>
         ) : (
           <div>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+              onClick={() => setShowLogin(true)}
+            >
               Login
             </button>
             <button
@@ -223,7 +228,11 @@ function App() {
           </div>
         )}
       </div>
-
+      {showLogin && (
+        <div className="absolute inset-0 flex justify-center items-center bg-transparent z-20">
+          <Login onClose={() => setShowLogin(false)} />
+        </div>
+      )}
       {showRegister && (
         <div className="absolute inset-0 flex justify-center items-center bg-transparent z-20">
           <Register onClose={() => setShowRegister(false)} />
