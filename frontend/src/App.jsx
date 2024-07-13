@@ -56,15 +56,15 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newPin = {
-      username: currentUsername,
-      title,
-      description: desc,
-      rating: parseInt(rating),
-      lat: newPlace.lat,
-      long: newPlace.long,
-    };
     try {
+      const newPin = {
+        username: currentUsername,
+        title,
+        description: desc,
+        rating: parseInt(rating),
+        lat: newPlace.lat,
+        long: newPlace.long,
+      };
       if (!newPin.username) {
         newPin.username = "Me";
       }
@@ -72,8 +72,22 @@ function App() {
       setPins([...pins, res.data.newPin]);
       setNewPlace(null);
     } catch (error) {
-      console.log("Error is here", error);
+      console.log("Error creating pin:", error);
     }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:7800/api/auth/logout");
+      setCurrentUsername(null);
+    } catch (error) {
+      console.log("Error logging out:", error);
+    }
+  };
+
+  const handleLogin = async (username) => {
+    setCurrentUsername(username);
+    setShowLogin(false);
   };
 
   return (
@@ -148,26 +162,7 @@ function App() {
             </React.Fragment>
           );
         })}
-        {/*         <div className="absolute top-0 right-0 m-4">
-          {currentUsername ? (
-            <button className="bg-red-700 text-white px-4 py-2 rounded-md mr-2">
-              Log out
-            </button>
-          ) : (
-            <div>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">
-                Login
-              </button>
-              <button className="bg-green-500 text-white px-4 py-2 rounded-md">
-                Register
-              </button>
-              <div>
-                <Register />
-              </div>
-            </div>
-          )}
-        </div>
-        <div></div> */}
+
         {newPlace && (
           <Popup
             className="w-72 h-auto ml-0"
@@ -192,8 +187,17 @@ function App() {
                   rows="3"
                   onChange={(e) => setDesc(e.target.value)}
                 ></textarea>
-                <label htmlFor="rating">Rating</label>
-                <select onChange={(e) => setRating(e.target.value)}>
+                <label htmlFor="rating" className="mb-2">
+                  Rating
+                </label>
+                <select
+                  onChange={(e) => setRating(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded mb-4 focus:outline-teal-200"
+                  defaultValue=""
+                >
+                  <option value="" disabled>
+                    Select rating
+                  </option>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -208,7 +212,10 @@ function App() {
       </Map>
       <div className="absolute top-0 right-0 m-4 z-10">
         {currentUsername ? (
-          <button className="bg-red-700 text-white px-4 py-2 rounded-md mr-2">
+          <button
+            className="bg-red-700 text-white px-4 py-2 rounded-md mr-2"
+            onClick={handleLogout}
+          >
             Log out
           </button>
         ) : (
@@ -230,7 +237,10 @@ function App() {
       </div>
       {showLogin && (
         <div className="absolute inset-0 flex justify-center items-center bg-transparent z-20">
-          <Login onClose={() => setShowLogin(false)} />
+          <Login
+            onClose={() => setShowLogin(false)}
+            loginSuccess={handleLogin}
+          />
         </div>
       )}
       {showRegister && (

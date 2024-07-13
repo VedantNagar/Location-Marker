@@ -1,6 +1,6 @@
 import React from "react";
 
-const Login = ({ onClose }) => {
+const Login = ({ onClose, loginSuccess }) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState(false);
@@ -16,9 +16,11 @@ const Login = ({ onClose }) => {
         },
         { withCredentials: true }
       );
+      loginSuccess(res.data.username);
       console.log(res.data);
     } catch (error) {
       console.log(error);
+      setError(error.response?.data?.message || "An error occurred");
     }
   };
 
@@ -29,6 +31,11 @@ const Login = ({ onClose }) => {
       w-72 h-auto p-8"
       >
         <h2 className="text-center text-2xl mb-4">Login</h2>
+        {error && (
+          <div className="bg-red-100 text-red-700 p-2 rounded mb-4">
+            {error}
+          </div>
+        )}
         <form className="flex flex-col mx-auto my-auto" onSubmit={handleSubmit}>
           <label htmlFor="email" className="mb-2">
             Email
@@ -50,6 +57,7 @@ const Login = ({ onClose }) => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
             className="px-3 py-2 border border-gray-300 rounded mb-4 focus:outline-teal-200"
+            required
           />
           <button
             type="submit"
