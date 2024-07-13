@@ -10,7 +10,29 @@ const app = express();
 dotenv.config();
 
 app.use(express.json());
-app.use(cors());
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://localhost:5173",
+  "http://localhost:5174",
+  "https://localhost:5174",
+  "http://localhost:8000",
+];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  optionsSuccessStatus: 204,
+  credentials: true, // Allow credentials like cookies
+};
+app.use(cors(corsOptions));
+
 app.use("/api/pins", pinRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
