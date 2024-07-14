@@ -21,7 +21,7 @@ const Login = ({ onClose, loginSuccess }) => {
       console.log(res.data);
     } catch (error) {
       console.log(error);
-      setError(error.response?.data?.message || "An error occurred");
+      setError(error.response?.data || "An error occurred");
     }
   };
 
