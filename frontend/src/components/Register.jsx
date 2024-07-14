@@ -28,7 +28,7 @@ const Register = ({ onClose, onRegisterSuccess }) => {
       setSuccess(true);
       onRegisterSuccess(res.data.username);
     } catch (error) {
-      setError(error.response?.data?.message || "An error occurred");
+      setError(error.response?.data || "An error occurred");
     }
   };
 

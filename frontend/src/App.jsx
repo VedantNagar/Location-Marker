@@ -120,7 +120,11 @@ function App() {
                 anchor="bottom"
               >
                 <FaMapPin
-                  className="text-red-500 text-2xl hover:cursor-pointer"
+                  className={`text-2xl hover:cursor-pointer ${
+                    currentUsername === pin.username
+                      ? "text-red-500"
+                      : "text-blue-500"
+                  }`}
                   onClick={() => handleClick(pin._id, pin.lat, pin.long)}
                   style={{ fontSize: `${viewState.zoom * 4}px` }}
                 />

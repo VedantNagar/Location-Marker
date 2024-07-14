@@ -22,12 +22,14 @@ export const register = async (req, res) => {
     return res
       .cookie("token", token, {
         httpOnly: true,
-        sameSite: "none",
+
         expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-        secure: true,
       })
       .status(201)
-      .json("User has been registered and logged in");
+      .json({
+        message: "User has been registered and logged in",
+        username: newUser.username,
+      });
   } catch (error) {
     res.status(500).json(error);
   }
@@ -38,7 +40,7 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json("User not found");
+      return res.status(404).json("Wrong email");
     }
     const pass = await bcrypt.compare(password, user.password);
     if (!pass) {
@@ -51,7 +53,6 @@ export const login = async (req, res) => {
       .cookie("token", token, {
         httpOnly: true,
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        secure: true,
       })
       .json({ message: "User has been logged in", username: user.username });
   } catch (error) {
