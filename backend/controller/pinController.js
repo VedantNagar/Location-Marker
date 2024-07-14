@@ -24,7 +24,7 @@ export const createPin = async (req, res) => {
 export const getPins = async (req, res) => {
   try {
     const { id } = req.params;
-    const pins = await Pin.find(id);
+    const pins = await Pin.findById(id);
     if (!pins) {
       return res.status(404).json({ message: "No pins found" });
     }
