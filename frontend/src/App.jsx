@@ -291,7 +291,6 @@ function App() {
           <Login
             onClose={() => setShowLogin(false)}
             loginSuccess={handleLogin}
-            myStorage={myStorage}
           />
         </div>
       )}
@@ -300,7 +299,6 @@ function App() {
           <Register
             onClose={() => setShowRegister(false)}
             onRegisterSuccess={handleRegister}
-            myStorage={myStorage}
           />
         </div>
       )}
