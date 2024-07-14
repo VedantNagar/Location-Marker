@@ -30,7 +30,9 @@ function App() {
   useEffect(() => {
     const getPins = async () => {
       try {
-        const response = await axios.get("http://localhost:7800/api/pins");
+        const response = await axios.get(
+          "https://location-marker.onrender/api/pins"
+        );
         setPins(response.data);
         console.log(response.data);
       } catch (error) {
@@ -73,7 +75,10 @@ function App() {
       if (!newPin.username) {
         newPin.username = "Me";
       }
-      const res = await axios.post("http://localhost:7800/api/pins", newPin);
+      const res = await axios.post(
+        "https://location-marker.onrender/api/pins",
+        newPin
+      );
       setPins([...pins, res.data.newPin]);
       setNewPlace(null);
     } catch (error) {
@@ -84,7 +89,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:7800/api/auth/logout");
+      await axios.post("https://location-marker.onrender/api/auth/logout");
       setCurrentUsername(null);
       myStorage.removeItem("username");
       toast.success(`Logged out`);
@@ -111,7 +116,7 @@ function App() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this pin?")) {
       try {
-        await axios.delete(`http://localhost:7800/api/pins/${id}`);
+        await axios.delete(`https://location-marker.onrender/api/pins/${id}`);
         setPins(pins.filter((pin) => pin._id !== id));
         toast.success("Pin has been deleted");
       } catch (error) {

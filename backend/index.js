@@ -13,10 +13,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://localhost:5173",
-  "http://localhost:5174",
-  "https://localhost:5174",
-  "http://localhost:8000",
+  "https://location-marker.onrender.com",
 ];
 
 const corsOptions = {
@@ -33,9 +30,14 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+app.use("/", express.static("../frontend/dist"));
+app.use("/assets", express.static("../frontend/dist/assets"));
+
 app.use("/api/pins", pinRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
+
+app.use("/*", express.static("../frontend/dist/index.html"));
 
 const port = process.env.PORT || 3000;
 const start = async () => {

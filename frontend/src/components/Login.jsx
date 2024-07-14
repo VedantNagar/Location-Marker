@@ -10,7 +10,7 @@ const Login = ({ onClose, loginSuccess }) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:7800/api/auth/login",
+        "https://location-marker.onrender/api/auth/login",
         {
           email,
           password,
