@@ -1,15 +1,17 @@
 import React, { useRef } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = ({ onClose, onRegisterSuccess }) => {
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
+
   const [formData, setFormData] = React.useState({
     username: "",
     email: "",
     password: "",
   });
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -35,6 +37,14 @@ const Register = ({ onClose, onRegisterSuccess }) => {
   return (
     <div className="bg-slate-50 bg-opacity-60 w-72 p-6 rounded-md shadow-lg">
       <h2 className="text-center text-2xl mb-4">Register</h2>
+      {error && (
+        <div className="bg-red-100 text-red-700 p-2 rounded mb-4">{error}</div>
+      )}
+      {success && (
+        <div className="text-green-700 text-center mb-4 p-2 rounded bg-green-100">
+          Success!
+        </div>
+      )}
       <form className="flex flex-col" onSubmit={handleSubmit}>
         <label htmlFor="username" className="mb-2">
           Username
@@ -82,12 +92,6 @@ const Register = ({ onClose, onRegisterSuccess }) => {
       >
         Close
       </button>
-      {success && (
-        <div className="text-green-500 text-center mt-4">
-          Success! You can now log in.
-        </div>
-      )}
-      {error && <div className="text-red-500 text-center mt-4">{error}</div>}
     </div>
   );
 };

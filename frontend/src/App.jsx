@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Map, { Marker, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { FaMapPin } from "react-icons/fa";
-import { FaStar } from "react-icons/fa";
+import { FaMapPin, FaStar, FaTrash } from "react-icons/fa";
 import { format } from "timeago.js";
 import axios from "axios";
 import Register from "./components/Register";
@@ -95,6 +94,19 @@ function App() {
     setShowRegister(false);
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this pin?")) {
+      try {
+        await axios.delete(`http://localhost:7800/api/pins/${id}`);
+        setPins(pins.filter((pin) => pin._id !== id));
+        toast.success("Pin has been deleted");
+      } catch (error) {
+        toast.error("Error deleting pin", error);
+        console.log("Error deleting pin:", error);
+      }
+    }
+  };
+
   return (
     <div className="w-screen h-screen overflow-hidden">
       <Map
@@ -165,6 +177,16 @@ function App() {
                     <span className="date text-xs">
                       {format(pin.createdAt)}
                     </span>
+                    {(currentUsername === pin.username ||
+                      (!currentUsername && pin.username === "Me")) && (
+                      <button
+                        className="bg-red-500 text-white px-2 py-1 mt-2 rounded-md flex items-center"
+                        onClick={() => handleDelete(pin._id)}
+                      >
+                        <FaTrash className="mr-1" />
+                        Delete
+                      </button>
+                    )}
                   </div>
                 </Popup>
               )}
