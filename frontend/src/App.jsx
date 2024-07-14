@@ -9,6 +9,7 @@ import Login from "./components/Login";
 import { toast, ToastContainer } from "react-toastify";
 
 function App() {
+  const myStorage = window.localStorage;
   const [pins, setPins] = useState([]);
   const [currentLocation, setCurrentLocation] = useState({});
   const [newPlace, setNewPlace] = useState(null);
@@ -37,6 +38,10 @@ function App() {
       }
     };
     getPins();
+    const storedUser = myStorage.getItem("username");
+    if (storedUser) {
+      setCurrentUsername(storedUser);
+    }
   }, []);
 
   const handleClick = (id, lat, long) => {
@@ -81,6 +86,7 @@ function App() {
     try {
       await axios.post("http://localhost:7800/api/auth/logout");
       setCurrentUsername(null);
+      myStorage.removeItem("username");
       toast.success(`Logged out`);
     } catch (error) {
       console.log("Error logging out:", error);
@@ -90,12 +96,14 @@ function App() {
 
   const handleLogin = async (username) => {
     setCurrentUsername(username);
+    myStorage.setItem("username", username);
     setShowLogin(false);
     toast.success(`${username} has been logged in`);
   };
 
   const handleRegister = async (username) => {
     setCurrentUsername(username);
+    myStorage.setItem("username", username);
     setShowRegister(false);
     toast.success(`${username} registered and logged in`);
   };
@@ -115,7 +123,12 @@ function App() {
 
   return (
     <div className="w-screen h-screen overflow-hidden">
-      <ToastContainer position="top-center" draggable theme="dark" />
+      <ToastContainer
+        position="top-center"
+        draggable
+        theme="dark"
+        autoClose={2200}
+      />
       <Map
         {...viewState}
         onMove={(evt) => setViewState(evt.viewState)}
@@ -278,6 +291,7 @@ function App() {
           <Login
             onClose={() => setShowLogin(false)}
             loginSuccess={handleLogin}
+            myStorage={myStorage}
           />
         </div>
       )}
@@ -286,6 +300,7 @@ function App() {
           <Register
             onClose={() => setShowRegister(false)}
             onRegisterSuccess={handleRegister}
+            myStorage={myStorage}
           />
         </div>
       )}

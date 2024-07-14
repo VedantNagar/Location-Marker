@@ -20,9 +20,8 @@ const Login = ({ onClose, loginSuccess }) => {
       loginSuccess(res.data.username);
       console.log(res.data);
     } catch (error) {
-      console.error("Error:", error.response?.data || error.message);
-
-      setError(error.response?.data || "An error occurred");
+      console.log(error);
+      setError(error.response?.data?.message || "An error occurred");
     }
   };
 
