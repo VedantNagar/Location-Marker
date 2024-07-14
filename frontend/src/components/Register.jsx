@@ -24,7 +24,7 @@ const Register = ({ onClose, onRegisterSuccess }) => {
         return;
       }
       const res = await axios.post(
-        "https://location-marker.onrender/api/auth/register",
+        "https://location-marker.onrender.com/api/auth/register",
         formData
       );
       setSuccess(true);
