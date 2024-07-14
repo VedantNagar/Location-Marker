@@ -22,12 +22,20 @@ export const createPin = async (req, res) => {
 };
 
 export const getPins = async (req, res) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
   try {
-    const { id } = req.params;
-    const pins = await Pin.find({ _id: id });
-    if (!pins) {
-      return res.status(404).json({ message: "No pins found" });
+    const user = jwt.verify(token, process.env.SECRET_KEY);
+    const pins = await Pin.find({ username: user.username });
+
+    if (!pins.length) {
+      return res.status(404).json({ message: "No pins found for this user" });
     }
+
     res.status(200).json(pins);
   } catch (error) {
     res.status(500).json({ message: error.message });
