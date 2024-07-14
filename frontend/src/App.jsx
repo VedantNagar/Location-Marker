@@ -6,6 +6,7 @@ import { format } from "timeago.js";
 import axios from "axios";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import { toast, ToastContainer } from "react-toastify";
 
 function App() {
   const [pins, setPins] = useState([]);
@@ -71,6 +72,7 @@ function App() {
       setPins([...pins, res.data.newPin]);
       setNewPlace(null);
     } catch (error) {
+      toast.error("Error creating pin");
       console.log("Error creating pin:", error);
     }
   };
@@ -79,19 +81,23 @@ function App() {
     try {
       await axios.post("http://localhost:7800/api/auth/logout");
       setCurrentUsername(null);
+      toast.success(`Logged out`);
     } catch (error) {
       console.log("Error logging out:", error);
+      toast.error("Error logging out");
     }
   };
 
   const handleLogin = async (username) => {
     setCurrentUsername(username);
     setShowLogin(false);
+    toast.success(`${username} has been logged in`);
   };
 
   const handleRegister = async (username) => {
     setCurrentUsername(username);
     setShowRegister(false);
+    toast.success(`${username} registered and logged in`);
   };
 
   const handleDelete = async (id) => {
@@ -109,6 +115,7 @@ function App() {
 
   return (
     <div className="w-screen h-screen overflow-hidden">
+      <ToastContainer position="top-center" draggable theme="dark" />
       <Map
         {...viewState}
         onMove={(evt) => setViewState(evt.viewState)}
