@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Map, { Marker, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FaMapPin, FaStar, FaTrash } from "react-icons/fa";
@@ -26,25 +26,24 @@ function App() {
     bearing: 0,
     pitch: 0,
   });
-
-  useEffect(() => {
-    const getPins = async () => {
-      try {
-        const response = await axios.get(
-          "https://location-marker.onrender.com/api/pins"
-        );
-        setPins(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.log("Error fetching pins:", error.message);
-      }
-    };
-    getPins();
-    const storedUser = myStorage.getItem("username");
-    if (storedUser) {
-      setCurrentUsername(storedUser);
+  const fetchPins = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        "https://location-marker.onrender.com/api/pins"
+      );
+      setPins(response.data);
+    } catch (error) {
+      console.log("Error fetching pins:", error.message);
     }
   }, []);
+
+  useEffect(() => {
+    fetchPins();
+    const user = myStorage.getItem("username");
+    if (user) {
+      setCurrentUsername(user);
+    }
+  }, [fetchPins]);
 
   const handleClick = (id, lat, long) => {
     setCurrentLocation(id);
@@ -79,7 +78,7 @@ function App() {
         "https://location-marker.onrender.com/api/pins",
         newPin
       );
-      setPins([...pins, res.data.newPin]);
+      fetchPins();
       setNewPlace(null);
     } catch (error) {
       toast.error("Error creating pin");
@@ -119,7 +118,7 @@ function App() {
         await axios.delete(
           `https://location-marker.onrender.com/api/pins/${id}`
         );
-        setPins(pins.filter((pin) => pin._id !== id));
+        fetchPins();
         toast.success("Pin has been deleted");
       } catch (error) {
         toast.error("Error deleting pin", error);
