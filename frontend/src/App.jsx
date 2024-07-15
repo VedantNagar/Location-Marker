@@ -31,6 +31,7 @@ function App() {
       const response = await axios.get(
         "https://location-marker.onrender.com/api/pins"
       );
+      console.log("Pins:", response.data);
       setPins(response.data);
     } catch (error) {
       console.log("Error fetching pins:", error.message);
