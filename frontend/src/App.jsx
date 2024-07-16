@@ -14,6 +14,7 @@ function App() {
   const [currentLocation, setCurrentLocation] = useState({});
   const [newPlace, setNewPlace] = useState(null);
   const [currentUsername, setCurrentUsername] = useState(null);
+  const [currentId, setCurrentId] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [title, setTitle] = useState("");
@@ -26,25 +27,35 @@ function App() {
     bearing: 0,
     pitch: 0,
   });
-  const fetchPins = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        "https://location-marker.onrender.com/api/pins"
-      );
-      console.log("Pins:", response.data);
-      setPins(response.data);
-    } catch (error) {
-      console.log("Error fetching pins:", error.message);
-    }
-  }, []);
 
   useEffect(() => {
-    fetchPins();
-    const user = myStorage.getItem("username");
-    if (user) {
-      setCurrentUsername(user);
+    const userId = myStorage.getItem("userId");
+    const username = myStorage.getItem("username");
+
+    if (userId && username) {
+      setCurrentId(userId);
+      setCurrentUsername(username);
     }
-  }, [fetchPins]);
+  }, [myStorage]);
+  const fetchUserPins = useCallback(async () => {
+    if (currentId) {
+      try {
+        const response = await axios.get(
+          `http://localhost:7800/api/pins/${currentId}`
+        );
+        setPins(response.data);
+      } catch (error) {
+        console.log("Error fetching user pins:", error.message);
+        toast.error("Error fetching pins");
+      }
+    }
+  }, [currentId]);
+
+  useEffect(() => {
+    if (currentId) {
+      fetchUserPins();
+    }
+  }, [currentId, fetchUserPins]);
 
   const handleClick = (id, lat, long) => {
     setCurrentLocation(id);
@@ -66,6 +77,7 @@ function App() {
     try {
       const newPin = {
         username: currentUsername,
+        userId: currentId,
         title,
         description: desc,
         rating: parseInt(rating),
@@ -75,12 +87,10 @@ function App() {
       if (!newPin.username) {
         newPin.username = "Me";
       }
-      const res = await axios.post(
-        "https://location-marker.onrender.com/api/pins",
-        newPin
-      );
-      fetchPins();
+      await axios.post("http://localhost:7800/api/pins", newPin);
+      fetchUserPins();
       setNewPlace(null);
+      toast.success("Pin created successfully");
     } catch (error) {
       toast.error("Error creating pin");
       console.log("Error creating pin:", error);
@@ -89,9 +99,12 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await axios.post("https://location-marker.onrender.com/api/auth/logout");
+      await axios.post("http://localhost:7800/api/auth/logout");
       setCurrentUsername(null);
+      setCurrentId(null);
       myStorage.removeItem("username");
+      myStorage.removeItem("userId");
+      setPins([]);
       toast.success(`Logged out`);
     } catch (error) {
       console.log("Error logging out:", error);
@@ -99,27 +112,31 @@ function App() {
     }
   };
 
-  const handleLogin = async (username) => {
+  const handleLogin = async (username, userId) => {
     setCurrentUsername(username);
+    setCurrentId(userId);
     myStorage.setItem("username", username);
+    myStorage.setItem("userId", userId);
     setShowLogin(false);
     toast.success(`${username} has been logged in`);
+    fetchUserPins();
   };
 
-  const handleRegister = async (username) => {
+  const handleRegister = async (username, userId) => {
     setCurrentUsername(username);
+    setCurrentId(userId);
     myStorage.setItem("username", username);
+    myStorage.setItem("userId", userId);
     setShowRegister(false);
     toast.success(`${username} registered and logged in`);
+    fetchUserPins();
   };
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this pin?")) {
       try {
-        await axios.delete(
-          `https://location-marker.onrender.com/api/pins/${id}`
-        );
-        fetchPins();
+        await axios.delete(`http://localhost:7800/api/pins/${id}`);
+        setPins(pins.filter((pin) => pin._id !== id));
         toast.success("Pin has been deleted");
       } catch (error) {
         toast.error("Error deleting pin", error);

@@ -10,15 +10,14 @@ const Login = ({ onClose, loginSuccess }) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://location-marker.onrender.com/api/auth/login",
+        "http://localhost:7800/api/auth/login",
         {
           email,
           password,
         },
         { withCredentials: true }
       );
-      loginSuccess(res.data.username);
-      console.log(res.data);
+      loginSuccess(res.data.username, res.data.userId);
     } catch (error) {
       console.log(error);
       setError(error.response?.data || "An error occurred");

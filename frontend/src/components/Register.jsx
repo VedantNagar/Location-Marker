@@ -24,11 +24,11 @@ const Register = ({ onClose, onRegisterSuccess }) => {
         return;
       }
       const res = await axios.post(
-        "https://location-marker.onrender.com/api/auth/register",
+        "http://localhost:7800/api/auth/register",
         formData
       );
       setSuccess(true);
-      onRegisterSuccess(res.data.username);
+      onRegisterSuccess(res.data.username, res.data.userId);
     } catch (error) {
       setError(error.response?.data || "An error occurred");
     }

@@ -29,6 +29,7 @@ export const register = async (req, res) => {
       .json({
         message: "User has been registered and logged in",
         username: newUser.username,
+        userId: newUser._id,
       });
   } catch (error) {
     res.status(500).json(error);
@@ -46,6 +47,8 @@ export const login = async (req, res) => {
     if (!pass) {
       return res.status(401).json("Wrong password");
     }
+    const { password: passw, ...userInfo } = user._doc;
+
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
       expiresIn: "14d",
     });
@@ -54,7 +57,11 @@ export const login = async (req, res) => {
         httpOnly: true,
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       })
-      .json({ message: "User has been logged in", username: user.username });
+      .json({
+        message: "User has been logged in",
+        username: user.username,
+        userId: user._id,
+      });
   } catch (error) {
     res.status(500).json(error);
   }
