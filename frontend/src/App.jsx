@@ -230,10 +230,10 @@ function App() {
                     <label className="text-sm text-red-500 border-b-2 border-red-500 block">
                       Information
                     </label>
-                    <div className="username text-sm">
+                    <div className="username text-xs">
                       Created by {pin.username}
                     </div>
-                    <span className="date text-xs">
+                    <span className="date text-xs my-1">
                       {format(pin.createdAt)}
                     </span>
                     {(currentUsername === pin.username ||
