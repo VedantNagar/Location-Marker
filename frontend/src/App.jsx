@@ -11,6 +11,9 @@ import { toast, ToastContainer } from "react-toastify";
 function App() {
   const myStorage = window.localStorage;
   const [pins, setPins] = useState([]);
+  const [mapStyle, setMapStyle] = useState(
+    "mapbox://styles/mapbox/streets-v12"
+  );
   const [currentLocation, setCurrentLocation] = useState({});
   const [newPlace, setNewPlace] = useState(null);
   const [currentUsername, setCurrentUsername] = useState(null);
@@ -147,6 +150,16 @@ function App() {
     }
   };
 
+  const changeMapStyle = (newStyle) => {
+    try {
+      setMapStyle(newStyle);
+      toast.success("Map style changed");
+    } catch (error) {
+      console.log("Error changing map style:", error);
+      toast.error("Error changing map style");
+    }
+  };
+
   return (
     <div className="w-screen h-screen overflow-hidden">
       <ToastContainer
@@ -160,7 +173,7 @@ function App() {
         onMove={(evt) => setViewState(evt.viewState)}
         style={{ width: "100%", height: "100%" }}
         mapboxAccessToken="pk.eyJ1IjoidmVkYW50MjEiLCJhIjoiY2x5OW0wOXZyMHR1dzJ2b2hxZTM4d2g3MSJ9.fK8JHGe7_RNazEam66wTCg"
-        mapStyle="mapbox://styles/mapbox/streets-v11"
+        mapStyle={mapStyle}
         onDblClick={addPinClick}
       >
         {pins.map((pin) => {
@@ -310,6 +323,32 @@ function App() {
           </Popup>
         )}
       </Map>
+      <div className="absolute top-0 left-0 m-4 z-10">
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+          onClick={() => changeMapStyle("mapbox://styles/mapbox/streets-v12")}
+        >
+          Streets
+        </button>
+      </div>
+      <div className="absolute top-0 left-0 m-4 z-10">
+        <button
+          className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
+          onClick={() =>
+            changeMapStyle("mapbox://styles/mapbox/satellite-streets-v12")
+          }
+        >
+          Satellite
+        </button>
+      </div>
+      <div className="absolute top-0 left-0 m-4 z-10">
+        <button
+          className="bg-yellow-500 text-white px-4 py-2 rounded-md mr-2"
+          onClick={() => changeMapStyle("mapbox://styles/mapbox/outdoors-v12")}
+        >
+          Outdoors
+        </button>
+      </div>
       <div className="absolute top-0 right-0 m-4 z-10">
         {currentUsername ? (
           <button
