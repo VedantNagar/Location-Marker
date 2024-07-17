@@ -41,7 +41,8 @@ function App() {
     if (currentId) {
       try {
         const response = await axios.get(
-          `http://localhost:7800/api/pins/${currentId}`
+          `https://location-marker.onrender.com/api/pins/${currentId}`
+          /* `http://localhost:7800/api/pins/${currentId}` */
         );
         setPins(response.data);
       } catch (error) {
@@ -87,7 +88,7 @@ function App() {
       if (!newPin.username) {
         toast.error("Please login to add a pin");
       }
-      await axios.post("http://localhost:7800/api/pins", newPin);
+      await axios.post("https://location-marker.onrender.com/api/pins", newPin);
       fetchUserPins();
       setNewPlace(null);
       toast.success("Pin created successfully");
@@ -99,7 +100,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:7800/api/auth/logout");
+      await axios.post("https://location-marker.onrender.com/api/auth/logout");
       setCurrentUsername(null);
       setCurrentId(null);
       myStorage.removeItem("username");
@@ -135,7 +136,9 @@ function App() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this pin?")) {
       try {
-        await axios.delete(`http://localhost:7800/api/pins/${id}`);
+        await axios.delete(
+          `https://location-marker.onrender.com/api/pins/${id}`
+        );
         setPins(pins.filter((pin) => pin._id !== id));
         toast.success("Pin has been deleted");
       } catch (error) {
