@@ -160,7 +160,7 @@ function App() {
         onMove={(evt) => setViewState(evt.viewState)}
         style={{ width: "100%", height: "100%" }}
         mapboxAccessToken="pk.eyJ1IjoidmVkYW50MjEiLCJhIjoiY2x5OW0wOXZyMHR1dzJ2b2hxZTM4d2g3MSJ9.fK8JHGe7_RNazEam66wTCg"
-        mapStyle="mapbox://styles/mapbox/standard"
+        mapStyle="mapbox://styles/mapbox/streets-v11"
         onDblClick={addPinClick}
       >
         {pins.map((pin) => {
