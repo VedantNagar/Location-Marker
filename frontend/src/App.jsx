@@ -92,7 +92,7 @@ function App() {
       setNewPlace(null);
       toast.success("Pin created successfully");
     } catch (error) {
-      toast.error("Error creating pin");
+      toast.error("Error creating pin, please enter Title and Rating");
       console.log("Error creating pin:", error);
     }
   };
