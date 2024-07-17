@@ -93,6 +93,7 @@ function App() {
       toast.success("Pin created successfully");
     } catch (error) {
       toast.error("Error creating pin");
+      console.log("Error creating pin:", error);
     }
   };
 
@@ -247,25 +248,43 @@ function App() {
             anchor="left"
           >
             <div className="flex">
-              <form className="flex" onSubmit={handleSubmit}>
-                <label htmlFor="title">Title</label>
+              <form
+                className="flex flex-col p-2 rounded-md bg-white shadow-md"
+                onSubmit={handleSubmit}
+              >
+                <label
+                  htmlFor="title"
+                  className="text-sm text-red-500 border-b-2 border-red-500 block mb-2"
+                >
+                  Title
+                </label>
                 <input
                   type="text"
                   placeholder="Enter a title"
+                  className="px-3 py-2 border border-gray-300 rounded mb-4 focus:outline-teal-300"
                   onChange={(e) => setTitle(e.target.value)}
                 />
-                <label htmlFor="review">Review</label>
+                <label
+                  htmlFor="review"
+                  className="text-sm text-red-500 border-b-2 border-red-500 block mb-2"
+                >
+                  Review
+                </label>
                 <textarea
                   placeholder="Share your experience"
                   rows="3"
+                  className="px-3 py-2 border border-gray-300 rounded mb-4 focus:outline-teal-300"
                   onChange={(e) => setDesc(e.target.value)}
                 ></textarea>
-                <label htmlFor="rating" className="mb-2">
+                <label
+                  htmlFor="rating"
+                  className="text-sm text-red-500 border-b-2 border-red-500 block mb-2"
+                >
                   Rating
                 </label>
                 <select
                   onChange={(e) => setRating(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded mb-4 focus:outline-teal-200"
+                  className="px-3 py-2 border border-gray-300 rounded mb-4 focus:outline-teal-300"
                   defaultValue=""
                 >
                   <option value="" disabled>
@@ -277,7 +296,12 @@ function App() {
                   <option value="4">4</option>
                   <option value="5">5</option>
                 </select>
-                <button type="submit">Add Pin</button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-red-400 rounded-md text-white hover:bg-red-600"
+                >
+                  Add Pin
+                </button>
               </form>
             </div>
           </Popup>
