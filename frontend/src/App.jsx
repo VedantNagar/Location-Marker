@@ -323,16 +323,16 @@ function App() {
           </Popup>
         )}
       </Map>
-      <div className="absolute top-0 left-0 m-4 z-10">
+      <div className="absolute top-0 left-0 m-4 z-10 flex flex-col sm:flex-row">
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+          className="bg-blue-500 text-white px-2 py-1 text-xs sm:text-sm sm:px-3 sm:py-2 rounded-md mb-2 sm:mb-0 sm:mr-2 w-24 sm:w-auto "
           onClick={() => changeMapStyle("mapbox://styles/mapbox/streets-v12")}
         >
           Streets
         </button>
 
         <button
-          className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
+          className="bg-green-500 text-white px-2 py-1 text-xs sm:text-sm sm:px-3 sm:py-2 rounded-md mb-2 sm:mb-0 sm:mr-2 w-24 sm:w-auto"
           onClick={() =>
             changeMapStyle("mapbox://styles/mapbox/satellite-streets-v12")
           }
@@ -341,16 +341,16 @@ function App() {
         </button>
 
         <button
-          className="bg-yellow-500 text-white px-4 py-2 rounded-md mr-2"
+          className="bg-yellow-500 text-white px-2 py-1 text-xs sm:text-sm sm:px-3 sm:py-2 rounded-md w-24 sm:w-auto"
           onClick={() => changeMapStyle("mapbox://styles/mapbox/outdoors-v12")}
         >
           Outdoors
         </button>
       </div>
-      <div className="absolute top-0 right-0 m-4 z-10">
+      <div className="absolute top-0 right-0 m-4 z-10 flex flex-col sm:flex-row">
         {currentUsername ? (
           <button
-            className="bg-red-700 text-white px-4 py-2 rounded-md mr-2"
+            className="bg-red-700 text-white px-2 py-1 text-xs sm:text-sm sm:px-3 sm:py-2 rounded-md w-24 sm:w-auto"
             onClick={handleLogout}
           >
             Log out
@@ -358,13 +358,13 @@ function App() {
         ) : (
           <div>
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+              className="bg-blue-500 text-white px-2 py-1 text-xs sm:text-sm sm:px-3 sm:py-2 rounded-md mb-2 sm:mb-0 sm:mr-2 w-24 sm:w-auto"
               onClick={() => setShowLogin(true)}
             >
               Login
             </button>
             <button
-              className="bg-green-500 text-white px-4 py-2 rounded-md"
+              className="bg-green-500 text-white px-2 py-1 text-xs sm:text-sm sm:px-3 sm:py-2 rounded-md w-24 sm:w-auto"
               onClick={() => setShowRegister(true)}
             >
               Register
