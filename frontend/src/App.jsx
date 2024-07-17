@@ -85,7 +85,7 @@ function App() {
         long: newPlace.long,
       };
       if (!newPin.username) {
-        newPin.username = "Me";
+        toast.error("Please login to add a pin");
       }
       await axios.post("http://localhost:7800/api/pins", newPin);
       fetchUserPins();
@@ -93,7 +93,6 @@ function App() {
       toast.success("Pin created successfully");
     } catch (error) {
       toast.error("Error creating pin");
-      console.log("Error creating pin:", error);
     }
   };
 
@@ -140,7 +139,6 @@ function App() {
         toast.success("Pin has been deleted");
       } catch (error) {
         toast.error("Error deleting pin", error);
-        console.log("Error deleting pin:", error);
       }
     }
   };
@@ -151,14 +149,14 @@ function App() {
         position="top-center"
         draggable
         theme="dark"
-        autoClose={2200}
+        autoClose={2400}
       />
       <Map
         {...viewState}
         onMove={(evt) => setViewState(evt.viewState)}
         style={{ width: "100%", height: "100%" }}
         mapboxAccessToken="pk.eyJ1IjoidmVkYW50MjEiLCJhIjoiY2x5OW0wOXZyMHR1dzJ2b2hxZTM4d2g3MSJ9.fK8JHGe7_RNazEam66wTCg"
-        mapStyle="mapbox://styles/mapbox/streets-v11"
+        mapStyle="mapbox://styles/mapbox/streets-v12"
         onDblClick={addPinClick}
       >
         {pins.map((pin) => {
