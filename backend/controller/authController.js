@@ -41,7 +41,7 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json("Wrong email");
+      return res.status(404).json("This email is not registered.");
     }
     const pass = await bcrypt.compare(password, user.password);
     if (!pass) {
