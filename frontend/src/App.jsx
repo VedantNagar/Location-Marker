@@ -330,8 +330,7 @@ function App() {
         >
           Streets
         </button>
-      </div>
-      <div className="absolute top-0 left-0 m-4 z-10">
+
         <button
           className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
           onClick={() =>
@@ -340,8 +339,7 @@ function App() {
         >
           Satellite
         </button>
-      </div>
-      <div className="absolute top-0 left-0 m-4 z-10">
+
         <button
           className="bg-yellow-500 text-white px-4 py-2 rounded-md mr-2"
           onClick={() => changeMapStyle("mapbox://styles/mapbox/outdoors-v12")}
