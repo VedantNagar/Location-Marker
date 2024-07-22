@@ -152,6 +152,9 @@ function App() {
 
   const changeMapStyle = (newStyle) => {
     try {
+      if (newStyle === mapStyle) {
+        toast.info("Map style already selected");
+      }
       setMapStyle(newStyle);
       toast.success("Map style changed");
     } catch (error) {
