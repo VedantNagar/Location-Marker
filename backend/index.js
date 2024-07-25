@@ -14,6 +14,7 @@ app.use(express.json());
 const allowedOrigins = [
   "http://localhost:5173",
   "https://location-marker.onrender.com",
+  "https://location-marker-bte1.onrender.com",
 ];
 
 const corsOptions = {
