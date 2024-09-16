@@ -23,7 +23,7 @@ function App() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [rating, setRating] = useState("");
-  const [lastTapTime, setLastTapTime] = useState(0);
+  const [longPressTimeout, setLongPressTimeout] = useState(null);
   const [viewState, setViewState] = useState({
     latitude: 28.6567,
     longitude: 77.069,
@@ -40,7 +40,7 @@ function App() {
       setCurrentId(userId);
       setCurrentUsername(username);
     }
-    toast.info("Double click (or single tap on mobile) to mark a location");
+    toast.info("Double click (or long press on mobile) to mark a location");
   }, [myStorage]);
   const fetchUserPins = useCallback(async () => {
     if (currentId) {
@@ -166,19 +166,20 @@ function App() {
     }
   };
 
-  const handleMobileDoubleTap = (e) => {
-    const currentTime = new Date().getTime();
-    const tapLength = currentTime - lastTapTime;
-     
-    if (tapLength < 300 && tapLength > 0) {
+  const mobilePressStart = (e) => {
+    const timeoutId = setTimeout(() => {
       const { lng, lat } = e.lngLat;
-  
       setNewPlace({
         long: lng,
         lat: lat,
       });
-    }
-    setLastTapTime(currentTime);
+    }, 2000);
+
+    setLongPressTimeout(timeoutId);
+  };
+
+  const mobilePressEnd = () => {
+    clearTimeout(longPressTimeout);
   };
 
   const isMobile = /Mobi|Android/i.test(navigator.userAgent);
@@ -189,7 +190,7 @@ function App() {
         position="top-center"
         draggable
         theme="dark"
-        autoClose={2400}
+        autoClose={2600}
       />
       <Map
         {...viewState}
@@ -197,8 +198,9 @@ function App() {
         style={{ width: "100%", height: "100%" }}
         mapboxAccessToken="pk.eyJ1IjoidmVkYW50MjEiLCJhIjoiY2x5OW0wOXZyMHR1dzJ2b2hxZTM4d2g3MSJ9.fK8JHGe7_RNazEam66wTCg"
         mapStyle={mapStyle}
-        onDblClick={isMobile ? null : addPinClick}  
-        onClick={isMobile ? handleMobileDoubleTap : null}
+        onDblClick={isMobile ? null : addPinClick} 
+        onTouchStart={isMobile ? mobilePressStart : null}
+        onTouchEnd={isMobile ? mobilePressEnd : null}
       >
         {pins.map((pin) => {
           if (isNaN(pin.lat) || isNaN(pin.long)) {
