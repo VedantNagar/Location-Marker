@@ -173,7 +173,7 @@ function App() {
         long: lng,
         lat: lat,
       });
-    }, 2000);
+    }, 1300);
 
     setLongPressTimeout(timeoutId);
   };
@@ -190,7 +190,7 @@ function App() {
         position="top-center"
         draggable
         theme="dark"
-        autoClose={2600}
+        autoClose={2700}
       />
       <Map
         {...viewState}
