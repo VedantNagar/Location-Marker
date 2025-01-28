@@ -15,6 +15,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://location-marker.onrender.com",
   "https://location-marker-umt4.onrender.com",
+  "https://location-marker-8xwq.onrender.com",
 ];
 
 const corsOptions = {
