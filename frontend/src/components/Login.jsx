@@ -10,7 +10,7 @@ const Login = ({ onClose, loginSuccess }) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://location-marker-umt4.onrender.com/api/auth/login",
+        "https://location-marker-8xwq.onrender.com/api/auth/login",
         {
           email,
           password,
